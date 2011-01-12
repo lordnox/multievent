@@ -1,7 +1,7 @@
 var EventEmitter = require('events').EventEmitter;
 var slice = Array.prototype.slice;
 
-/* Ugly ... Dirty Implementation of a multi-event-waiting
+/*
 This extends the default EventEmitter.on to handle multible events.
 Should be handled with care, can leak memory, because it buffers the results.
 

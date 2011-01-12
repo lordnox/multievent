@@ -1,0 +1,19 @@
+This extends the default EventEmitter.on to handle multible events.
+Should be handled with care, can leak memory, because it buffers the results.
+
+var EE = new EventEmitter();
+
+EE.on('a', 'b', 'c', function() { console.log(arguments);});
+
+setTimeout(function() { EE.emit('a', 'A');}, 100);
+setTimeout(function() { EE.emit('b', 'B');}, 200);
+setTimeout(function() { EE.emit('c', 'C');}, 300); // ['A', 'B', 'C']
+
+setTimeout(function() { EE.emit('a', 'A1');}, 100);
+setTimeout(function() { EE.emit('b', 'B1');}, 200);
+setTimeout(function() { EE.emit('a', 'A2');}, 200);
+setTimeout(function() { EE.emit('b', 'B2');}, 300);
+setTimeout(function() { EE.emit('c', 'C1');}, 400); // ['A1', 'B1', 'C1']
+setTimeout(function() { EE.emit('c', 'C2');}, 500); // ['A2', 'B2', 'C2']
+
+Works with addListener and once too!
